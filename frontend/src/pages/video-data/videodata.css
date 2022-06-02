@@ -1,0 +1,24 @@
+.wrapper{
+    height:90vh;
+    width:100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card 
+{
+    width: 600px;
+}
+.card-body .btns {
+    display: flex;
+    flex-direction: row;
+    space-between: end;
+}
+.card-body .btns a{
+    flex: 1;
+    margin: 5px 15px;
+}
+.card-body .btns button{
+    flex: 1;
+    margin: 5px 15px;
+}

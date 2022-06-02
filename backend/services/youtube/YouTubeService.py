@@ -23,7 +23,18 @@ def fetch_links_from_description(description,video_id):
 
 class YouTubeService:
     def get_metrics(self, video_id):
-        global vid_link, vid_date, vid_title, channel_id, temp_list, expected_views, vid_views, vid_likes, vid_comments, updated_at, sum_of_link_cliks, failed_link_list, final_bitly_status
+        vid_link=""
+        vid_date=""
+        vid_title=""
+        channel_id=""
+        temp_list=""
+        expected_views=0
+        vid_views=0
+        vid_likes=0
+        vid_comments=0
+        sum_of_link_cliks=0
+        failed_link_list=[]
+        final_bitly_status=False
         google_sheet_service = GoogleSheetsService()
         youtube_status = False
         bitly_status = False

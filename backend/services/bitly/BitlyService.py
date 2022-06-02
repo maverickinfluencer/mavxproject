@@ -29,10 +29,10 @@ class BitlyService:
                     status = False
                     failed_link_list.append(link)
                 print(f'linkCount: {click_count_list}')
-                current_date_time = datetime.now()
-                updated_at = current_date_time.strftime("%d/%m/%Y %H:%M:%S")
+                bitly_current_date_time = datetime.now()
+                bitly_updated_at = bitly_current_date_time.strftime("%d/%m/%Y %H:%M:%S")
                 bitly_link_list.append((
-                    video_id, link, click, updated_at, status
+                    video_id, link, click, bitly_updated_at, status
                 ))
                 google_sheet_service = GoogleSheetsService()
                 google_sheet_service.add_row(model=bitly_link_list,tab_range='Link',spread_sheet_id='1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
