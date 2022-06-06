@@ -71,6 +71,14 @@ const Navbar = () => {
         e.preventDefault();
         navigate("/admin/video-data");
     } 
+    const descriptionGeneratorPage = (e)=>{
+      e.preventDefault();
+      navigate("/admin/description-generator");
+    }
+    const adminPage =(e)=>{
+      e.preventDefault();
+      navigate("/admin")
+    }
 
   return (
     <AppBar position="static">
@@ -141,7 +149,7 @@ const Navbar = () => {
                 </>
                 )} */}
 
-                <MenuItem onClick={videoDataPage}>
+                <MenuItem onClick={adminPage}>
                   <Typography textAlign="center">Admin</Typography>
                 </MenuItem>
                 <MenuItem onClick="#">
@@ -215,7 +223,7 @@ const Navbar = () => {
               </>
             )} */}
             <Button
-                onClick={videoDataPage}
+                onClick={adminPage}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 Admin

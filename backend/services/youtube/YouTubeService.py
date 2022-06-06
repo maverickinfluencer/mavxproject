@@ -3,6 +3,7 @@ import json
 import requests
 from datetime import datetime
 import re
+from services.time.current_time import get_current_time
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
 
 KEY = "AIzaSyD3jah3H6DjJXM9wX2KY05RNYnmD5IXgY4"
@@ -47,6 +48,7 @@ class YouTubeService:
             print(f'data: {data}')
             temp_list = []
             youtube_list = []
+            # yt_updated_at = get_current_time()
             for i in data['items']:
                 vid_link = 'https://www.youtube.com/watch?v=' + i.get('id')
                 # playtime = i['contentDetails'].get('duration')
@@ -59,13 +61,11 @@ class YouTubeService:
                 vid_views = i['statistics'].get('viewCount')
                 vid_likes = i['statistics'].get('likeCount')
                 vid_comments = i['statistics'].get('commentCount')
-                current_date_time = datetime.now()
-                updated_at = current_date_time.strftime("%d/%m/%Y %H:%M:%S")
                 expected_views = 0
                 youtube_status = True
             youtube_list.append((
                 video_id, vid_link, vid_date, channel_id, vid_title, expected_views, vid_views, vid_likes,
-                vid_comments, updated_at, youtube_status
+                vid_comments, get_current_time(), youtube_status
             ))
             print(youtube_list)
             # upload it to final output Spread Sheet
@@ -79,7 +79,7 @@ class YouTubeService:
                 sum_of_link_cliks, failed_link_list, final_bitly_status = fetch_links_from_description(description=description,video_id=video_id)
             temp_list.append((
                 video_id, vid_link, vid_date, channel_id, vid_title, expected_views, vid_views, vid_likes, vid_comments,
-                sum_of_link_cliks, updated_at, final_bitly_status, youtube_status
+                sum_of_link_cliks, get_current_time(), final_bitly_status, youtube_status
             ))
             print("uploading metrics to Today video data v1")
             google_sheet_service.add_row(model=temp_list, tab_range="output",

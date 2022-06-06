@@ -16,6 +16,6 @@ class VideoDataService:
         # fetch metrics from YouTube
         youtube_service = YouTubeService()
         for video_id in list_video_ids:
-            time.sleep(5)
+            time.sleep(2)
             youtube_service.get_metrics(video_id=video_id)
         print("Done")

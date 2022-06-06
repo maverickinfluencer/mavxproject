@@ -5,15 +5,18 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from copy import copy,deepcopy
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 INPUT_SPREADSHEET_ID = '1ZplElpGuBVlnkSquSuGDLiD6L8c27O20C0KEQn5K0pc'
-INPUT_RANGE_NAME = 'Input!A1:A100'
+INPUT_RANGE_NAME = 'Input!A1:A1000'
 SINGLE_OUTPUT_SPREADSHEET_ID = '1pCI31UUBQtMJiH2mAqjeC3siE0Pks3yu1xRupS8a9QY'
 HISTORICAL_OUTPUT_SPREADSHEET_ID = '1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE'
+BRAND_INPUT_SHEET_ID = '1T28-y8GwxwKT-MVvt-XkGDwL20eIqV3pmOWLlf4XlTo'
+BRAND_INPUT_RANGE = 'Brand Input!A2:E10'
 
 
 def google_authorize():
@@ -66,6 +69,20 @@ class GoogleSheetsService:
             video_ids.append(row[0])
         print(f'Got {i} videoIds from google sheet')
         return video_ids
+    def get_brand_info(self):
+        sheet = google_authorize()
+        result = sheet.values().get(spreadsheetId=BRAND_INPUT_SHEET_ID,
+                                    range=BRAND_INPUT_RANGE).execute()
+        print(result)
+        values = deepcopy(result.get('values', [[]]))
+        # leng = len(result.get('values',[[]]))
+        # print(f"length = {leng}")
+        if not values:
+            print('No data found.')
+            return
+        print(values)
+        return values
+
 
     def add_row(self, model, tab_range, spread_sheet_id):
         print(f"Add row triggered with input: {model}")

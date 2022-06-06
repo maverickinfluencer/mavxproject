@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
 import requests
 import json
+from services.time.current_time import get_current_time
 from datetime import datetime
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
 link_count_headers = {'Authorization': 'Bearer 62bc203ade942dba3a485c965fb69a3f01cace1f'}
@@ -29,10 +30,9 @@ class BitlyService:
                     status = False
                     failed_link_list.append(link)
                 print(f'linkCount: {click_count_list}')
-                bitly_current_date_time = datetime.now()
-                bitly_updated_at = bitly_current_date_time.strftime("%d/%m/%Y %H:%M:%S")
+                # bitly_updated_at = get_current_time()
                 bitly_link_list.append((
-                    video_id, link, click, bitly_updated_at, status
+                    video_id, link, click, get_current_time(), status
                 ))
                 google_sheet_service = GoogleSheetsService()
                 google_sheet_service.add_row(model=bitly_link_list,tab_range='Link',spread_sheet_id='1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
