@@ -58,8 +58,6 @@ class GoogleSheetsService:
         if not values:
             print('No data found.')
             return
-
-        print('Name, Major:')
         i = 0
         video_ids = []
         for row in values:
@@ -116,3 +114,22 @@ class GoogleSheetsService:
         response = request.execute()
         print(f'response from empty sheets method. ${response}')
         return "Done! No Values at Output Sheets"
+
+    def get_historical_bitly_links(self):
+        sheet = google_authorize()
+        range_ = 'Link!A2:E10000'
+        result = sheet.values().get(spreadsheetId=HISTORICAL_OUTPUT_SPREADSHEET_ID,
+                                    range=range_).execute()
+        values = result.get('values', [])
+        if not values:
+            print('No data found.')
+            return
+        historical_bitly_list = []
+        i=0
+        for row in values:
+            historical_bitly_list.append([])
+            for col in range(5):
+                historical_bitly_list[i].append(row[col])
+            i+=1
+        # print("historical bitly links")
+        return historical_bitly_list

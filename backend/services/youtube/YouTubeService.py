@@ -1,7 +1,7 @@
 from services.bitly.BitlyService import BitlyService
 import json
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 from services.time.current_time import get_current_time
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
@@ -9,18 +9,25 @@ from services.googlesheets.GoogleSheetsService import GoogleSheetsService
 KEY = "AIzaSyD3jah3H6DjJXM9wX2KY05RNYnmD5IXgY4"
 
 
-def fetch_links_from_description(description,video_id):
-    bitly_links = re.findall(r'(https?://fash.la\S+)', description)
-    print(bitly_links)
-    print(f"fetched Bitly Links.: {bitly_links}")
-    unique_bitly_links = []
-    for link in bitly_links:
-        if link not in unique_bitly_links:
-            unique_bitly_links.append(link)
-    print(f"unique bitly links {unique_bitly_links}")
-    bitly_service = BitlyService()
-    return bitly_service.fetch_bitly_link_clicks(links=unique_bitly_links,video_id=video_id)
-
+def fetch_links_from_description(description,video_id,published_at):
+    # (datetime.strptime(published_at, "%d-%m-%Y %H:%M:%S") + timedelta(days=30)) == get_current_time()
+    # if( abs((datetime.strptime(get_current_time(),"%d-%m-%Y %H:%M:%S") - datetime.strptime(published_at, "%d-%m-%Y")).days) < 30 ):
+        bitly_links = re.findall(r'(https?://fash.la\S+)', description)
+        print(bitly_links)
+        print(f"fetched Bitly Links.: {bitly_links}")
+        unique_bitly_links = []
+        for link in bitly_links:
+            if link not in unique_bitly_links:
+                unique_bitly_links.append(link)
+        print(f"unique bitly links {unique_bitly_links}")
+        bitly_service = BitlyService()
+        return bitly_service.fetch_bitly_link_clicks(links=unique_bitly_links,video_id=video_id)
+    # elif():
+    #     # upload date greater than 30 but less than 60
+    #     return
+    # else:
+    #     # currently getting videosIds which are less than 60 days
+    #     return
 
 class YouTubeService:
     def get_metrics(self, video_id):
@@ -76,7 +83,7 @@ class YouTubeService:
             youtube_status = False
         finally:
             if len(description) != 0:
-                sum_of_link_cliks, failed_link_list, final_bitly_status = fetch_links_from_description(description=description,video_id=video_id)
+                sum_of_link_cliks, failed_link_list, final_bitly_status = fetch_links_from_description(description=description,video_id=video_id, published_at=vid_date)
             temp_list.append((
                 video_id, vid_link, vid_date, channel_id, vid_title, expected_views, vid_views, vid_likes, vid_comments,
                 sum_of_link_cliks, get_current_time(), final_bitly_status, youtube_status
