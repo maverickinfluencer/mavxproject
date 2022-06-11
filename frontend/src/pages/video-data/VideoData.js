@@ -3,7 +3,7 @@ import './videodata.css'
 import axios from 'axios'
 
 function VideoData() {
-  const API_URL = process.env.REACT_APP_SERVER_ADDRESS
+  const API_URL = "http://65.0.7.27:5000/api/v1"
   const [videoDataResponse, setVideoDataResponse] = useState({})
 
   const handleTodayData=()=>{
