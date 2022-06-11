@@ -38,7 +38,7 @@ const DescriptionGenerator = () => {
         e.preventDefault();
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:5000/api/v1/admin/price-info',
+            url: 'http://65.0.7.27:5000/api/v1/admin/price-info',
             data: JSON.stringify({
                 brand_name: brandName,
                 influencer_name: influencerName,

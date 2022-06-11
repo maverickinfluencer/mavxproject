@@ -3,22 +3,18 @@ from datetime import datetime
 from services.descriptionGenerator.PriceInfo import price_info
 from flask_cors import CORS, cross_origin
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
-from flask_apscheduler import APScheduler
-
+# from flask_apscheduler import APScheduler
+# from flask_crontab import Crontab
+from apscheduler.schedulers.background import BackgroundScheduler
 from services.descriptionGenerator.BrandDetail import get_brand_info
+import atexit
 
 from services.videodata.VideoDataService import VideoDataService
 from models.video_data_v1.videoDataStatus import video_data_response
 
-class Config:
-    SCHEDULER_API_ENABLED = True
-
 app = Flask(__name__)
-app.config.from_object(Config())
+# crontab = Crontab(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
 
 
 @app.route('/')
@@ -48,8 +44,9 @@ def get_price_info():
     result = price_info(links=links, discount=discount)
     return jsonify(result)
 
+
 @app.route('/api/v1/admin/video-data')
-@scheduler.task('cron', id='do_job_1', hour='00', minute='00', day='*')
+# @scheduler.task('cron', id='do_job_1', hour='00', minute='00', day='*')
 def generate_video_data():
     # last_run = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     video_data_response['last_run'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -71,15 +68,21 @@ def get_status_video_data():
     print("get_video_data_status triggered.")
     return video_data_response
 
+
 @app.route('/history')
 @cross_origin()
 def get_bitly_link_clicks():
     obj = GoogleSheetsService()
     return jsonify(obj.get_historical_bitly_links())
 
-@scheduler.task('cron', id='do_job_2', hour='19', minute='35')
+
+# @scheduler.task('cron', id='do_job_2', hour='19', minute='35')
+# @crontab.job(minute="37", hour="11")
 def job2():
     print('Job 2 executed')
-
+scheduler = BackgroundScheduler()
+scheduler.start()
+scheduler.add_job(generate_video_data, 'cron',hour=13, minute=30)
+atexit.register(lambda: scheduler.shutdown())
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run(debug=True)
