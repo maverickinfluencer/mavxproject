@@ -15,7 +15,7 @@ const DescriptionGenerator = () => {
     const [priceInfo, setPriceInfo] = useState();
     useEffect(() => {
         console.log("useEffect called.");
-        axios.get("http://127.0.0.1:5000/api/v1/admin/video-description/brand-info/" + brandName).then((res) => {
+        axios.get("http://65.0.7.27:5000/api/v1/admin/video-description/brand-info/" + brandName).then((res) => {
             console.log(res.data);
             setBrandInfo(res.data)
         })
