@@ -99,7 +99,7 @@ class GoogleSheetsService:
                                             insertDataOption=insert_data_option, body=value_range_body)
             response = request.execute()
         except Exception as ex:
-            print("Exception while uploading a row:"+ex)
+            print("Exception while uploading a row:",ex)
         print("upload a row in spreadsheet:"+spread_sheet_id)
 
     # def upload_data_to_youtube_historical_spreadsheet(self):

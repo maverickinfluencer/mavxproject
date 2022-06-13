@@ -3,6 +3,7 @@ from datetime import datetime
 from services.descriptionGenerator.PriceInfo import price_info
 from flask_cors import CORS, cross_origin
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
+from services.OneTime import one_time,mhs
 # from flask_apscheduler import APScheduler
 # from flask_crontab import Crontab
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -10,13 +11,16 @@ from services.descriptionGenerator.BrandDetail import get_brand_info
 import atexit
 
 from services.videodata.VideoDataService import VideoDataService
-from models.video_data_v1.videoDataStatus import video_data_response
+# from models.video_data_v1.videoDataStatus import video_data_response
 
 app = Flask(__name__)
 # crontab = Crontab(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-
+video_data_response = {
+    'last_run': "",
+    'video_data_status': ""
+}
 @app.route('/')
 def hello_world():  # put application's code here
     print("hello world function called.")
@@ -46,7 +50,6 @@ def get_price_info():
 
 
 @app.route('/api/v1/admin/video-data')
-# @scheduler.task('cron', id='do_job_1', hour='00', minute='00', day='*')
 def generate_video_data():
     # last_run = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     video_data_response['last_run'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -74,15 +77,14 @@ def get_status_video_data():
 def get_bitly_link_clicks():
     obj = GoogleSheetsService()
     return jsonify(obj.get_historical_bitly_links())
+# @app.route('/scrap')
+# def get_influencer_details():
+#     mhs()
+#     return "done"
 
-
-# @scheduler.task('cron', id='do_job_2', hour='19', minute='35')
-# @crontab.job(minute="37", hour="11")
-def job2():
-    print('Job 2 executed')
 scheduler = BackgroundScheduler()
 scheduler.start()
-scheduler.add_job(generate_video_data, 'cron',hour=13, minute=30)
+scheduler.add_job(generate_video_data, 'cron',hour=0, minute=0)
 atexit.register(lambda: scheduler.shutdown())
 if __name__ == '__main__':
     app.run(debug=True)

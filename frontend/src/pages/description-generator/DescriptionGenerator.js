@@ -6,6 +6,7 @@ import qs from 'qs'
 import DOMPurify from "dompurify";
 
 const DescriptionGenerator = () => {
+    const API_URL = "http://65.0.7.27:5000/api/v1"
     const [brandName, setBrandName] = useState("")
     const [brandInfo, setBrandInfo] = useState([])
     const [links, setLinks] = useState([{}])
@@ -15,7 +16,7 @@ const DescriptionGenerator = () => {
     const [priceInfo, setPriceInfo] = useState();
     useEffect(() => {
         console.log("useEffect called.");
-        axios.get("http://65.0.7.27:5000/api/v1/admin/video-description/brand-info/" + brandName).then((res) => {
+        axios.get(API_URL+"/admin/video-description/brand-info/" + brandName).then((res) => {
             console.log(res.data);
             setBrandInfo(res.data)
         })
