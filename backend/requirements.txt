@@ -57,3 +57,4 @@ virtualenv-clone==0.5.7
 wcwidth==0.2.5
 Werkzeug==2.1.2
 zipp==3.8.0
+selenium~=4.2.0
