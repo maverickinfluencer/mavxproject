@@ -103,6 +103,7 @@ def price_info(links, discount):
         discounted_price_list.append(get_after_discount_price(
             int(product_data[2].replace('.', '').replace(',', '').replace('Rs', '').replace("'", '')), discount))
     for i in range(len(price_list)):
-        output_str += r'{}: Original Price - Rs. {} After Coupon Code - Rs. {}\n'.format(title_list[i], price_list[i],discounted_price_list[i])
+        output_str += r'{}: Original Price - Rs. {} After Coupon Code - Rs. {} '.format(title_list[i], price_list[i],discounted_price_list[i])
+        output_str +="\n"
 
     return output_str
