@@ -3,7 +3,7 @@ from datetime import datetime
 from services.descriptionGenerator.PriceInfo import price_info
 from flask_cors import CORS, cross_origin
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
-from services.OneTime import one_time,mhs
+# from services.OneTime import one_time,mhs
 # from flask_apscheduler import APScheduler
 # from flask_crontab import Crontab
 from apscheduler.schedulers.background import BackgroundScheduler
