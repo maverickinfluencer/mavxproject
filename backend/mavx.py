@@ -3,15 +3,11 @@ from datetime import datetime
 from services.descriptionGenerator.PriceInfo import price_info
 from flask_cors import CORS, cross_origin
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
-# from services.OneTime import one_time,mhs
-# from flask_apscheduler import APScheduler
-# from flask_crontab import Crontab
 from apscheduler.schedulers.background import BackgroundScheduler
 from services.descriptionGenerator.BrandDetail import get_brand_info
 import atexit
-
+from services.descriptionGenerator.GenerateDescription import get_description
 from services.videodata.VideoDataService import VideoDataService
-# from models.video_data_v1.videoDataStatus import video_data_response
 
 app = Flask(__name__)
 # crontab = Crontab(app)
@@ -21,6 +17,8 @@ video_data_response = {
     'last_run': "",
     'video_data_status': ""
 }
+
+
 @app.route('/')
 def hello_world():  # put application's code here
     print("hello world function called.")
@@ -41,11 +39,25 @@ def get_price_info():
     req = request.json
     print("request=")
     print(req)
-    brand_name = req.get('brand_name')
-    influencer_name = req.get('influencer_name')
     discount = int(req.get('discount'))
     links = req.get('product_links')
     result = price_info(links=links, discount=discount)
+    return jsonify(result)
+
+
+@app.route('/api/v1/admin/description', methods=['POST'])
+@cross_origin()
+def get_descriptions():
+    req = request.json
+    print("request")
+    influencer_name = req.get('influencer_name')
+    discount = int(req.get('discount'))
+    coupon_code = req.get('coupon_code')
+    campaign_month = req.get('campaign_month')
+    brand_name = req.get('brand_name')
+    links = req.get('product_links')
+    result = get_description(influencer_name=influencer_name, discount=discount, coupon_code=coupon_code,
+                             campaign_month=campaign_month, brand_name=brand_name, links=links)
     return jsonify(result)
 
 
@@ -77,6 +89,8 @@ def get_status_video_data():
 def get_bitly_link_clicks():
     obj = GoogleSheetsService()
     return jsonify(obj.get_historical_bitly_links())
+
+
 # @app.route('/scrap')
 # def get_influencer_details():
 #     mhs()
@@ -84,7 +98,7 @@ def get_bitly_link_clicks():
 
 scheduler = BackgroundScheduler()
 scheduler.start()
-scheduler.add_job(generate_video_data, 'cron',hour=0, minute=0)
+scheduler.add_job(generate_video_data, 'cron', hour=0, minute=0)
 atexit.register(lambda: scheduler.shutdown())
 if __name__ == '__main__':
     app.run(debug=True)
