@@ -91,7 +91,7 @@ def price_info(links, discount):
     title_list = []
     price_list = []
     discounted_price_list = []
-    output_str = 'Price Info:\n'
+    output_str = ''
     print(links)
     product_links = []
     for link in links:

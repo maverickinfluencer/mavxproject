@@ -2,3 +2,5 @@ frontend/node_modules
 backend/__pycache__
 backend/.idea
 .env
+__pycache__/
+*.py[cod]
