@@ -35,9 +35,30 @@ def get_product_data(link):
         elif 'juniperfashion' in link:
             sku = 'NA'
             title = soup.find('h1', {'class': 'm-0'}).text.strip()
-            price = soup.find('span', {'class': 'money'}).text.strip().replace('Rs.', '').split('.')[0].replace(' ',
-                                                                                                                '').replace(
-                ',', '')
+            # price = soup.find('span', {'class': 'money'}).text.strip().replace('Rs.', '').split('.')[0].replace(' ',
+            #                                                                                                     '').replace(
+            #     ',', '')
+            test_price = soup.find('span', {'class': 'price price--sale'})
+            for p in test_price:
+                price = p.text.strip().replace('Rs.', '').split('.')[0].replace(' ', '').replace(',', '')
+
+            # print(test_price[0])
+            # print(test_price[1])
+            # price = test_price[1]
+            # print(price)
+            # price = "200"
+            # print(price)
+            # if len(test_price) == 0:
+            #     m = test_price[0]
+            #     print("first")
+            # elif len(test_price) > 1:
+            #     print("second")
+            #     print(test_price[1])
+            # print(price)
+            # print(price.text)
+            # print(test_price[1])
+            # price = "200"
+            # print(price)
         elif 'usplworld' in link:
             sku = 'NA'
             title = soup.find('li', {'class': 'pl-0'}).text.strip()
@@ -103,7 +124,8 @@ def price_info(links, discount):
         discounted_price_list.append(get_after_discount_price(
             int(product_data[2].replace('.', '').replace(',', '').replace('Rs', '').replace("'", '')), discount))
     for i in range(len(price_list)):
-        output_str += r'{}: Original Price - Rs. {} After Coupon Code - Rs. {} '.format(title_list[i], price_list[i],discounted_price_list[i])
-        output_str +="\n"
+        output_str += r'{}: Original Price - Rs. {} After Coupon Code - Rs. {} '.format(title_list[i], price_list[i],
+                                                                                        discounted_price_list[i])
+        output_str += "\n"
 
     return output_str
