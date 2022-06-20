@@ -8,6 +8,7 @@ from services.descriptionGenerator.BrandDetail import get_brand_info
 import atexit
 from services.descriptionGenerator.GenerateDescription import get_description
 from services.videodata.VideoDataService import VideoDataService
+from services.web_scraping.Coupon_Code_Validator import coupon_code_validator
 
 app = Flask(__name__)
 # crontab = Crontab(app)
@@ -82,6 +83,18 @@ def generate_video_data():
 def get_status_video_data():
     print("get_video_data_status triggered.")
     return video_data_response
+
+
+@app.route('/api/v1/admin/coupon-code-status', methods=['POST'])
+@cross_origin()
+def get_coupon_code_status():
+    req = request.json
+    print(req)
+    coupon_code = req.get('coupon_code')
+    links = req.get('product_links')
+    url =  links[0]
+    result = coupon_code_validator(coupon_code=coupon_code, url=url)
+    return jsonify(result)
 
 
 @app.route('/history')
