@@ -1,6 +1,5 @@
 from selenium import webdriver
 import time
-#from selenium.webdriver.chrome.service import Service
 import re
 from selenium.webdriver.chrome.options import Options
 
@@ -17,22 +16,12 @@ from selenium.webdriver.chrome.options import Options
 
 
 def coupon_code_validator(coupon_code, url):
-    #vdisplay = Xvfb()
-    #vdisplay.start()
-    #display = Display(visible=0, size=(800, 800))  
-    #display.start()
-    #chromeOptions = Options()
-    #chromeOptions.headless = True
     DRIVER_PATH = "/usr/local/bin/chromedriver"
+    # DRIVER_PATH = '/Users/shariqueaman/Downloads/chromedriver'
     chrome_options = Options()
     chrome_options.headless = True
     chrome_options.add_argument("--window-size=1920,1200")
-    #chrome_options.add_argument('--no-sandbox')
-    #chrome_options.add_argument('--headless')
-    #chrome_options.add_argument('--disable-dev-shm-usage')
-    #chrome_options.add_argument('--remote-debugging-port=9222')
-    #s=Service('/home/ubuntu/mavx/mavxproject/backend/linuxchromedriver ')
-    driver = webdriver.Chrome(options=chrome_options,executable_path=DRIVER_PATH)
+    driver = webdriver.Chrome(options=chrome_options, executable_path=DRIVER_PATH)
     coupun_code=coupon_code
     url = url
     s = url.split(".com")
@@ -157,5 +146,3 @@ def coupon_code_validator(coupon_code, url):
         print("NAN")
         return False
     driver.close()
-
- #   vdisplay.stop()

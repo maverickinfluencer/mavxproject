@@ -9,6 +9,7 @@ import atexit
 from services.descriptionGenerator.GenerateDescription import get_description
 from services.videodata.VideoDataService import VideoDataService
 from services.web_scraping.Coupon_Code_Validator import coupon_code_validator
+from services.web_scraping.script import webscrap
 
 app = Flask(__name__)
 # crontab = Crontab(app)
@@ -104,10 +105,11 @@ def get_bitly_link_clicks():
     return jsonify(obj.get_historical_bitly_links())
 
 
-# @app.route('/scrap')
-# def get_influencer_details():
-#     mhs()
-#     return "done"
+@app.route('/scrap')
+@cross_origin()
+def get_influencer_details():
+    print("web scrap called.")
+    return jsonify(webscrap())
 
 scheduler = BackgroundScheduler()
 scheduler.start()
