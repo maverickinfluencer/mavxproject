@@ -92,7 +92,7 @@ def get_coupon_code_status():
     print(req)
     coupon_code = req.get('coupon_code')
     links = req.get('product_links')
-    url =  links[0]
+    url = links[0]
     result = coupon_code_validator(coupon_code=coupon_code, url=url)
     return jsonify(result)
 
