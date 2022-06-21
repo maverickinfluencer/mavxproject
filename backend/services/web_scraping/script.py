@@ -4,8 +4,8 @@ import time
 
 
 def webscrap():
-    # DRIVER_PATH = "/usr/local/bin/chromedriver"
-    DRIVER_PATH = '/Users/shariqueaman/Downloads/chromedriver'
+    DRIVER_PATH = "/usr/local/bin/chromedriver"
+    # DRIVER_PATH = '/Users/shariqueaman/Downloads/chromedriver'
     chrome_options = Options()
     chrome_options.headless = True
     chrome_options.add_argument("--window-size=1920,1200")
