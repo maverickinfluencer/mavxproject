@@ -68,7 +68,7 @@ def get_description(influencer_name, coupon_code, campaign_month, brand_name, li
     output_str = ''
     price_info = ''
     name = influencer_name
-    discount = get_brand_discount(brand_name)
+    discount = int(get_brand_discount(brand_name))
     coupon_code = coupon_code
     month = campaign_month
     brand = brand_name
