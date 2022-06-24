@@ -54,12 +54,11 @@ def get_descriptions():
     req = request.json
     print("request")
     influencer_name = req.get('influencer_name')
-    discount = int(req.get('discount'))
     coupon_code = req.get('coupon_code')
     campaign_month = req.get('campaign_month')
     brand_name = req.get('brand_name')
     links = req.get('product_links')
-    result = get_description(influencer_name=influencer_name, discount=discount, coupon_code=coupon_code,
+    result = get_description(influencer_name=influencer_name, coupon_code=coupon_code,
                              campaign_month=campaign_month, brand_name=brand_name, links=links)
     return jsonify(result)
 

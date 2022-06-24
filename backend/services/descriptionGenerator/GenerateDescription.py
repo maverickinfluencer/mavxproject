@@ -45,27 +45,36 @@ def get_short_link_if_exisits(long_link, df):
     return df.loc[df['long_link'] == long_link]
 
 
-def get_brand_info(brand_name):
+def get_brand_info():
     google_service = GoogleSheetsService()
-    brand_info = google_service.get_brand_info()
+    return google_service.get_brand_info()
+def get_brand_hashTag(brand_name):
+    brand_info = get_brand_info()
     for item in brand_info:
         if item[0] == brand_name:
             return item[3]
     return []
+def get_brand_discount(brand_name):
+    google_service = GoogleSheetsService()
+    brand_info = google_service.get_brand_info()
+    for item in brand_info:
+        if item[0] == brand_name:
+            return item[2]
+    return []
 
 
-def get_description(influencer_name, discount, coupon_code, campaign_month, brand_name, links):
+def get_description(influencer_name, coupon_code, campaign_month, brand_name, links):
     print('Generating description for: {}'.format(influencer_name))
     output_str = ''
     price_info = ''
     name = influencer_name
-    discount = discount
+    discount = get_brand_discount(brand_name)
     coupon_code = coupon_code
     month = campaign_month
     brand = brand_name
     utm_campaign = get_utm_campaign(name, brand, month, discount)
     product_links = links
-    temp_hashtags = get_brand_info(brand_name)
+    temp_hashtags = get_brand_hashTag(brand_name)
     print(temp_hashtags)
     hashtags = temp_hashtags.replace("\n"," ")
     utm_product_links = []
