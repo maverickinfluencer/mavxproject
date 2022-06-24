@@ -10,6 +10,12 @@ from copy import copy,deepcopy
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
+# TOKEN_PATH = "/Users/shariqueaman/Desktop/mavx/newWorkingDir/mavxproject/backend/token.json"
+# CREDENTIAL_PATH = "/Users/shariqueaman/Desktop/mavx/newWorkingDir/mavxproject/backend/credentials.json"
+
+TOKEN_PATH = "token.json"
+CREDENTIAL_PATH = "credentials.json"
+
 # The ID and range of a sample spreadsheet.
 INPUT_SPREADSHEET_ID = '1ZplElpGuBVlnkSquSuGDLiD6L8c27O20C0KEQn5K0pc'
 INPUT_RANGE_NAME = 'Input!A1:A1000'
@@ -24,18 +30,17 @@ def google_authorize():
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists(TOKEN_PATH):
+        creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIAL_PATH, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open(TOKEN_PATH, 'w') as token:
             token.write(creds.to_json())
 
     try:

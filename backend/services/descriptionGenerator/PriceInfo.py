@@ -1,11 +1,19 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from urllib.parse import urlparse
+from services.googlesheets.GoogleSheetsService import GoogleSheetsService
 
 
 def get_after_discount_price(original_price, discount):
     return int(original_price - ((discount / 100) * original_price))
+
+def get_coupon_code(brand_name):
+    google_service = GoogleSheetsService()
+    brand_info = google_service.get_brand_info()
+    for item in brand_info:
+        if item[0] == brand_name:
+            return item[2]
+    return []
 
 
 def get_product_data(link):
@@ -108,16 +116,17 @@ def get_product_data(link):
     return data_list
 
 
-def price_info(links, discount):
+def price_info(links, brand_name):
+    discount = int(get_coupon_code(brand_name))
     title_list = []
     price_list = []
     discounted_price_list = []
     output_str = ''
     print(links)
     product_links = []
+    # for link in links:
+    #     product_links.append(link.get('link'))
     for link in links:
-        product_links.append(link.get('link'))
-    for link in product_links:
         product_data = get_product_data(link)
         title_list.append(product_data[1])
         price_list.append(int(product_data[2].replace('.', '').replace(',', '').replace('Rs', '').replace("'", '')))
