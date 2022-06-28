@@ -8,6 +8,10 @@ from services.descriptionGenerator.BrandDetail import get_brand_info
 import atexit
 from services.descriptionGenerator.GenerateDescription import get_description
 from services.videodata.VideoDataService import VideoDataService
+from services.airtable.AirtableCRUD import update_description_airtable
+from services.airtable.AirtableCRUD import update_price_info_airtable
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -40,8 +44,10 @@ def get_price_info():
     print(req)
     brand_name = req.get('brand_name')
     links = req.get('product_links')
+    record_id = req.get('record_id')
     result = price_info(uncleaned_links=links, brand_name=brand_name)
-    return jsonify(result)
+    update_price_info_airtable(record_id=record_id,price_info=result)
+    return jsonify("Price info updated on airtable")
 
 
 @app.route('/api/v1/admin/description', methods=['POST'])
@@ -54,9 +60,11 @@ def get_descriptions():
     campaign_month = req.get('campaign_month')
     brand_name = req.get('brand_name')
     links = req.get('product_links')
+    record_id = req.get('record_id')
     result = get_description(influencer_name=influencer_name, coupon_code=coupon_code,
                              campaign_month=campaign_month, brand_name=brand_name, uncleaned_links=links)
-    return jsonify(result)
+    update_description_airtable(record_id=record_id, description=result)
+    return jsonify("Description updated on airtable")
 
 
 @app.route('/api/v1/admin/video-data')
