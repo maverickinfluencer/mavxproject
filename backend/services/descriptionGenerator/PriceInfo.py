@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
+import re
 
 
 def get_after_discount_price(original_price, discount):
@@ -43,30 +44,9 @@ def get_product_data(link):
         elif 'juniperfashion' in link:
             sku = 'NA'
             title = soup.find('h1', {'class': 'm-0'}).text.strip()
-            # price = soup.find('span', {'class': 'money'}).text.strip().replace('Rs.', '').split('.')[0].replace(' ',
-            #                                                                                                     '').replace(
-            #     ',', '')
             test_price = soup.find('span', {'class': 'price price--sale'})
             for p in test_price:
                 price = p.text.strip().replace('Rs.', '').split('.')[0].replace(' ', '').replace(',', '')
-
-            # print(test_price[0])
-            # print(test_price[1])
-            # price = test_price[1]
-            # print(price)
-            # price = "200"
-            # print(price)
-            # if len(test_price) == 0:
-            #     m = test_price[0]
-            #     print("first")
-            # elif len(test_price) > 1:
-            #     print("second")
-            #     print(test_price[1])
-            # print(price)
-            # print(price.text)
-            # print(test_price[1])
-            # price = "200"
-            # print(price)
         elif 'usplworld' in link:
             sku = 'NA'
             title = soup.find('li', {'class': 'pl-0'}).text.strip()
@@ -116,12 +96,17 @@ def get_product_data(link):
     return data_list
 
 
-def price_info(links, brand_name):
+def price_info(uncleaned_links, brand_name):
     discount = int(get_coupon_code(brand_name))
     title_list = []
     price_list = []
     discounted_price_list = []
     output_str = ''
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    uncleaned_tuples = re.findall(regex, uncleaned_links)
+    links = []
+    for x in range(len(uncleaned_tuples)):
+        links.append(uncleaned_tuples[x][0])
     print(links)
     product_links = []
     # for link in links:

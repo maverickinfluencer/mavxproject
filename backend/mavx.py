@@ -8,11 +8,8 @@ from services.descriptionGenerator.BrandDetail import get_brand_info
 import atexit
 from services.descriptionGenerator.GenerateDescription import get_description
 from services.videodata.VideoDataService import VideoDataService
-# from services.web_scraping.Coupon_Code_Validator import coupon_code_validator
-# from services.web_scraping.script import webscrap
 
 app = Flask(__name__)
-# crontab = Crontab(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 video_data_response = {
@@ -41,10 +38,9 @@ def get_price_info():
     req = request.json
     print("request=")
     print(req)
-    # discount = int(req.get('discount'))
     brand_name = req.get('brand_name')
     links = req.get('product_links')
-    result = price_info(links=links, brand_name=brand_name)
+    result = price_info(uncleaned_links=links, brand_name=brand_name)
     return jsonify(result)
 
 
@@ -59,13 +55,12 @@ def get_descriptions():
     brand_name = req.get('brand_name')
     links = req.get('product_links')
     result = get_description(influencer_name=influencer_name, coupon_code=coupon_code,
-                             campaign_month=campaign_month, brand_name=brand_name, links=links)
+                             campaign_month=campaign_month, brand_name=brand_name, uncleaned_links=links)
     return jsonify(result)
 
 
 @app.route('/api/v1/admin/video-data')
 def generate_video_data():
-    # last_run = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     video_data_response['last_run'] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     last_run = video_data_response.get('last_run')
     print(f"generate_video_data controller triggered. at {last_run} ")
@@ -86,17 +81,6 @@ def get_status_video_data():
     return video_data_response
 
 
-# @app.route('/api/v1/admin/coupon-code-status', methods=['POST'])
-# @cross_origin()
-# def get_coupon_code_status():
-#     req = request.json
-#     print(req)
-#     coupon_code = req.get('coupon_code')
-#     links = req.get('product_links')
-#     url = links[0]
-#     result = coupon_code_validator(coupon_code=coupon_code, url=url)
-#     return jsonify(result)
-
 
 @app.route('/history')
 @cross_origin()
@@ -104,12 +88,6 @@ def get_bitly_link_clicks():
     obj = GoogleSheetsService()
     return jsonify(obj.get_historical_bitly_links())
 
-
-# @app.route('/scrap')
-# @cross_origin()
-# def get_influencer_details():
-#     print("web scrap called.")
-#     return jsonify(webscrap())
 
 scheduler = BackgroundScheduler()
 scheduler.start()

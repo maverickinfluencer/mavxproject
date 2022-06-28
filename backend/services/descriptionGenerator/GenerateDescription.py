@@ -5,6 +5,7 @@ import time
 from services.descriptionGenerator.PriceInfo import get_product_data
 import random
 from services.googlesheets.GoogleSheetsService import GoogleSheetsService
+import re
 
 
 def get_homepage_link(product_links):
@@ -63,7 +64,7 @@ def get_brand_discount(brand_name):
     return []
 
 
-def get_description(influencer_name, coupon_code, campaign_month, brand_name, links):
+def get_description(influencer_name, coupon_code, campaign_month, brand_name, uncleaned_links):
     print('Generating description for: {}'.format(influencer_name))
     output_str = ''
     price_info = ''
@@ -73,7 +74,12 @@ def get_description(influencer_name, coupon_code, campaign_month, brand_name, li
     month = campaign_month
     brand = brand_name
     utm_campaign = get_utm_campaign(name, brand, month, discount)
-    product_links = links
+    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+    uncleaned_tuples = re.findall(regex, uncleaned_links)
+    product_links = []
+    for x in range(len(uncleaned_tuples)):
+        product_links.append(uncleaned_tuples[x][0])
+    print(product_links)
     temp_hashtags = get_brand_hashTag(brand_name)
     print(temp_hashtags)
     hashtags = temp_hashtags.replace("\n"," ")
