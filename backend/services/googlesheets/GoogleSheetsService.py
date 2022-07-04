@@ -13,8 +13,8 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 # TOKEN_PATH = "/Users/shariqueaman/Desktop/mavx/newWorkingDir/mavxproject/backend/token.json"
 # CREDENTIAL_PATH = "/Users/shariqueaman/Desktop/mavx/newWorkingDir/mavxproject/backend/credentials.json"
 
-TOKEN_PATH = "/home/ubuntu/mavx/mavxproject/backend/venv/bin/python /home/ubuntu/mavx/mavxproject/backend/token.json"
-CREDENTIAL_PATH = "/home/ubuntu/mavx/mavxproject/backend/venv/bin/python /home/ubuntu/mavx/mavxproject/backend/credentials.json"
+TOKEN_PATH = "/home/ubuntu/mavx/mavxproject/backend/token.json"
+CREDENTIAL_PATH = "/home/ubuntu/mavx/mavxproject/backend/credentials.json"
 
 # The ID and range of a sample spreadsheet.
 INPUT_SPREADSHEET_ID = '1ZplElpGuBVlnkSquSuGDLiD6L8c27O20C0KEQn5K0pc'
