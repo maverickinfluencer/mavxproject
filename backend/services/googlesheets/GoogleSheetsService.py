@@ -88,7 +88,7 @@ class GoogleSheetsService:
 
 
     def add_row(self, model, tab_range, spread_sheet_id):
-        print(f"Add row triggered with input: {model}")
+        # print(f"Add row triggered with input: {model}")
         sheet = google_authorize()
         try:
             # How the input data should be interpreted.
@@ -105,7 +105,7 @@ class GoogleSheetsService:
             response = request.execute()
         except Exception as ex:
             print("Exception while uploading a row:",ex)
-        print("upload a row in spreadsheet:"+spread_sheet_id)
+        print("uploaded a row in spreadsheet:"+spread_sheet_id +" name = "+tab_range)
 
     # def upload_data_to_youtube_historical_spreadsheet(self):
     #     pass

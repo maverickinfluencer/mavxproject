@@ -100,9 +100,9 @@ def get_bitly_link_clicks():
     return jsonify(obj.get_historical_bitly_links())
 
 
-scheduler = BackgroundScheduler()
-scheduler.start()
-scheduler.add_job(generate_video_data, 'cron', hour=0, minute=0)
-atexit.register(lambda: scheduler.shutdown())
+# scheduler = BackgroundScheduler()
+# scheduler.start()
+# scheduler.add_job(generate_video_data, 'cron', hour=0, minute=0)
+# atexit.register(lambda: scheduler.shutdown())
 if __name__ == '__main__':
     app.run(debug=True)

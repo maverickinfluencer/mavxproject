@@ -13,13 +13,12 @@ def fetch_links_from_description(description,video_id,published_at):
     # (datetime.strptime(published_at, "%d-%m-%Y %H:%M:%S") + timedelta(days=30)) == get_current_time()
     # if( abs((datetime.strptime(get_current_time(),"%d-%m-%Y %H:%M:%S") - datetime.strptime(published_at, "%d-%m-%Y")).days) < 30 ):
         bitly_links = re.findall(r'(https?://fash.la\S+)', description)
-        print(bitly_links)
-        print(f"fetched Bitly Links.: {bitly_links}")
+        # print(f"fetched Bitly Links.: {bitly_links}")
         unique_bitly_links = []
         for link in bitly_links:
             if link not in unique_bitly_links:
                 unique_bitly_links.append(link)
-        print(f"unique bitly links {unique_bitly_links}")
+        # print(f"unique bitly links {unique_bitly_links}")
         bitly_service = BitlyService()
         return bitly_service.fetch_bitly_link_clicks(links=unique_bitly_links,video_id=video_id)
     # elif():
@@ -47,12 +46,12 @@ class YouTubeService:
         youtube_status = False
         bitly_status = False
         description = ''
-        videoLink = f"https://www.youtube.com/watch?v={video_id}"
+        # videoLink = f"https://www.youtube.com/watch?v={video_id}"
         try:
             url = f"https://www.googleapis.com/youtube/v3/videos?id={video_id}&key={KEY}&part=snippet,statistics"
             json_url = requests.get(url)
             data = json.loads(json_url.text)
-            print(f'data: {data}')
+            # print(f'data: {data}')
             temp_list = []
             youtube_list = []
             # yt_updated_at = get_current_time()
@@ -75,12 +74,6 @@ class YouTubeService:
                 vid_comments, get_current_time(), youtube_status
             ))
             print(youtube_list)
-            d = (datetime.today().date() - timedelta(days=60)).strftime('%Y-%m-%d')
-            if(vid_date == d):
-                # today is 60th day for this particular video
-                # uploading it to paushed video data
-                google_sheet_service.add_row(model=youtube_list, tab_range='Paushed Video Data', spread_sheet_id='hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
-
             # upload it to final output Spread Sheet
             print("youtube metrics uploading to Historical data v1")
             google_sheet_service.add_row(model=youtube_list, tab_range='Youtube', spread_sheet_id='1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
@@ -96,4 +89,13 @@ class YouTubeService:
             ))
             print("uploading metrics to Today video data v1")
             google_sheet_service.add_row(model=temp_list, tab_range="output", spread_sheet_id='1pCI31UUBQtMJiH2mAqjeC3siE0Pks3yu1xRupS8a9QY')
+            d = (datetime.today().date() - timedelta(days=60)).strftime('%Y-%m-%d')
+            print(d == vid_date.__str__())
+            if vid_date.__str__() == d:
+                print(f'saving videoId ${video_id} into paushed historical video')
+                # today is 60th day for this particular video
+                # uploading it to paushed video data
+                google_sheet_service.add_row(model=temp_list, tab_range='Paushed Video Data',
+                                             spread_sheet_id='1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
+
         print("done")
