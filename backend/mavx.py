@@ -10,8 +10,8 @@ from services.descriptionGenerator.GenerateDescription import get_description
 from services.videodata.VideoDataService import VideoDataService
 from services.airtable.AirtableCRUD import update_description_airtable
 from services.airtable.AirtableCRUD import update_price_info_airtable
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -47,6 +47,7 @@ def get_price_info():
     record_id = req.get('record_id')
     base_id = req.get('base_id')
     result = price_info(uncleaned_links=links, brand_name=brand_name)
+    print(result)
     update_price_info_airtable(record_id=record_id, price_info=result, base_id=base_id)
     return jsonify("Price info updated on airtable")
 

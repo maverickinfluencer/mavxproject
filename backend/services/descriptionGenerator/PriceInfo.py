@@ -12,7 +12,7 @@ def get_coupon_code(brand_name):
     google_service = GoogleSheetsService()
     brand_info = google_service.get_brand_info()
     for item in brand_info:
-        if item[0] == brand_name:
+        if item[0].upper() == brand_name.upper():
             return item[2]
     return []
 

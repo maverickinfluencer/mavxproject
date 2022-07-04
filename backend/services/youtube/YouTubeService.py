@@ -75,9 +75,15 @@ class YouTubeService:
                 vid_comments, get_current_time(), youtube_status
             ))
             print(youtube_list)
+            d = (datetime.today().date() - timedelta(days=60)).strftime('%Y-%m-%d')
+            if(vid_date == d):
+                # today is 60th day for this particular video
+                # uploading it to paushed video data
+                google_sheet_service.add_row(model=youtube_list, tab_range='Paushed Video Data', spread_sheet_id='hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
+
             # upload it to final output Spread Sheet
             print("youtube metrics uploading to Historical data v1")
-            google_sheet_service.add_row(model=youtube_list, tab_range='Youtube',spread_sheet_id='1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
+            google_sheet_service.add_row(model=youtube_list, tab_range='Youtube', spread_sheet_id='1hq-i4YKAGv7HvirtjqL-8TNOH0RPHXUTqyFy8oOLSFE')
             print("Youtube metrics added to Historical data.")
         except:
             youtube_status = False
@@ -89,6 +95,5 @@ class YouTubeService:
                 sum_of_link_cliks, get_current_time(), final_bitly_status, youtube_status
             ))
             print("uploading metrics to Today video data v1")
-            google_sheet_service.add_row(model=temp_list, tab_range="output",
-                                         spread_sheet_id='1pCI31UUBQtMJiH2mAqjeC3siE0Pks3yu1xRupS8a9QY')
+            google_sheet_service.add_row(model=temp_list, tab_range="output", spread_sheet_id='1pCI31UUBQtMJiH2mAqjeC3siE0Pks3yu1xRupS8a9QY')
         print("done")
