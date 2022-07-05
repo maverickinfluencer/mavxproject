@@ -6,3 +6,4 @@ backend/venv
 __pycache__/
 *.py[cod]
 .DS_Store
+backend/token.json
