@@ -75,6 +75,10 @@ def get_product_data(link):
             title = soup.find('h1', {'class': 'paira-product-title'}).text.strip()
             price = soup.find('span', {'class': 'paira-default-price'}).text.strip().replace('₹', '').split('.')[
                 0].replace(' ', '').replace(',', '')
+        elif 'selvia' in link:
+            sku = soup.find('div', {'itemprop': 'sku'}).text.strip()
+            title = soup.find('span', {'data-ui-id': 'page-title-wrapper'}).text.strip()
+            price = soup.find_all('span', {'class': 'price'})[1].text.strip()
         else:
             sku = 'NA'
             title = 'NA'
