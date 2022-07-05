@@ -2,10 +2,10 @@ import requests
 import os
 
 # AIRTABLE_BASE_ID = os.getenv("AIRTABLE_BASE_ID")
-AIRTABLE_TABLE_NAME = os.getenv("AIRTABLE_TABLE_NAME")
-API_KEY = os.getenv("API_KEY")
+AIRTABLE_TABLE_NAME = "Description%20and%20Price%20Info"
+API_KEY = "keysC422zvQpwRs88"
 headers = {
-    "Authorization": "Bearer keygHNEz63SvsU1c6",
+    "Authorization": "Bearer keysC422zvQpwRs88",
     "Content-Type": "application/json"
 }
 
