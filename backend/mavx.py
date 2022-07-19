@@ -49,7 +49,7 @@ def get_price_info():
     result = price_info(uncleaned_links=links, brand_name=brand_name)
     print(result)
     update_price_info_airtable(record_id=record_id, price_info=result, base_id=base_id)
-    return jsonify("Price info updated on airtable")
+    return jsonify(result)
 
 
 @app.route('/api/v1/admin/description', methods=['POST'])

@@ -85,8 +85,10 @@ def get_product_data(link):
             sku = 'NA'
             title = 'NA'
             price = 'NA'
-    except:
+    except Exception as e:
+        print(e)
         parsed = urlparse(link)
+        print(parsed)
         if not parsed.params:
             sku = 'homepage'
             title = 'homepage'
