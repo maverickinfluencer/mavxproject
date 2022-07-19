@@ -8,6 +8,7 @@ import re
 def get_after_discount_price(original_price, discount):
     return int(original_price - ((discount / 100) * original_price))
 
+
 def get_coupon_code(brand_name):
     google_service = GoogleSheetsService()
     brand_info = google_service.get_brand_info()
@@ -118,6 +119,7 @@ def price_info(uncleaned_links, brand_name):
     #     product_links.append(link.get('link'))
     for link in links:
         product_data = get_product_data(link)
+        print(product_data)
         title_list.append(product_data[1])
         price_list.append(int(product_data[2].replace('.', '').replace(',', '').replace('Rs', '').replace("'", '')))
         discounted_price_list.append(get_after_discount_price(
