@@ -49,12 +49,16 @@ def get_short_link_if_exisits(long_link, df):
 def get_brand_info():
     google_service = GoogleSheetsService()
     return google_service.get_brand_info()
+
+
 def get_brand_hashTag(brand_name):
     brand_info = get_brand_info()
     for item in brand_info:
         if item[0] == brand_name:
             return item[3]
     return []
+
+
 def get_brand_discount(brand_name):
     google_service = GoogleSheetsService()
     brand_info = google_service.get_brand_info()
@@ -62,6 +66,37 @@ def get_brand_discount(brand_name):
         if item[0] == brand_name:
             return item[2]
     return []
+
+
+def getInfo(brand, discount, coupon_code):
+    if brand.upper() == "SELVIA":
+        return random.choice(["Checkout multiple styles and designs at affordable prices from crop top designs, "
+                              "croptop dress for dailywear, casual wear at {}! Enjoy under budget crop tops at "
+                              "{} and get upto {}% off by using my code {}! Match crop top "
+                              "with jeans, crop top with skirt, crop top with saree. From bodycons to coord sets and "
+                              "summer dresses, {} is a one stop solution for all your western needs under "
+                              "budget!".format(brand, brand, discount, coupon_code, brand)])
+    else:
+        return random.choice([
+            'Explore designer Kurtis online at {}. From A-line Kurti, and Anarkali Kurti to cotton Kurtis, Sequins and '
+            'Fancy Kurtis, and embroidered Kurtis, {} is the one-stop solution for all party wear and festive branded '
+            'Kurtis at {}. You can buy Kurti for women online with an easy return policy. Get partywear cheap Indian '
+            'Kurtis online under budget with upto {}% discount with my code {}!'.format(
+                brand, brand, brand, discount, coupon_code),
+            'Get Designer Kurtis online at {}. Buy Anarkali Kurtis, Cotton Kurtis and Aline Kurtis Online, Sequins and '
+            'Fancy Kurtis. {} has all the party wear and festive branded kurta sets that you need! Explore Kurtis for '
+            'women online with the easy return policy. Explore Indian Kurtis online under budget with up to {}% discount '
+            'with my code {}!'.format(
+                brand, brand, discount, coupon_code),
+            'Check out stylish Kurti, sleeveless Kurtis and designer Kurtis at {}! From short Kurtis to long Kurtis, '
+            'Kurti dresses, ladies Kurti, {} has everything. Get affordable and cheap Kurti for women online with an easy '
+            'return policy and exciting offers! Use my code {} and get up to {}% discount on selected designer Kurtas for '
+            'women!'.format(
+                brand, brand, coupon_code, discount),
+            'Enjoy {}% discount on selected designer Kurtas for women! Use {} and get designer Kurtis and sleeveless '
+            'Kurtis online at {}. Shop for Kurtis online for women for all occasions- Partywear kurta sets to casual '
+            'wear, daily wear and office wear; {} is a one-stop shop for all your ethnic wear needs.'.format(
+                discount, coupon_code, brand, brand)])
 
 
 def get_description(influencer_name, coupon_code, campaign_month, brand_name, uncleaned_links):
@@ -81,8 +116,7 @@ def get_description(influencer_name, coupon_code, campaign_month, brand_name, un
         product_links.append(uncleaned_tuples[x][0])
     print(product_links)
     temp_hashtags = get_brand_hashTag(brand_name)
-    print(temp_hashtags)
-    hashtags = temp_hashtags.replace("\n"," ")
+    hashtags = temp_hashtags.replace("\n", " ")
     utm_product_links = []
     title_list = []
     price_list = []
@@ -119,26 +153,8 @@ def get_description(influencer_name, coupon_code, campaign_month, brand_name, un
             e1, discount, e1, brand, coupon_code, e3, homepage_link),
         'Enjoy {} {}% off {} by using my coupon code "{}" on {}! \nWebsite Link: {} {}'.format(
             e1, discount, e1, coupon_code, brand, e3, homepage_link)])
-    desc = random.choice([
-        'Explore designer Kurtis online at {}. From A-line Kurti, and Anarkali Kurti to cotton Kurtis, Sequins and '
-        'Fancy Kurtis, and embroidered Kurtis, {} is the one-stop solution for all party wear and festive branded '
-        'Kurtis at {}. You can buy Kurti for women online with an easy return policy. Get partywear cheap Indian '
-        'Kurtis online under budget with upto {}% discount with my code {}!'.format(
-            brand, brand, brand, discount, coupon_code),
-        'Get Designer Kurtis online at {}. Buy Anarkali Kurtis, Cotton Kurtis and Aline Kurtis Online, Sequins and '
-        'Fancy Kurtis. {} has all the party wear and festive branded kurta sets that you need! Explore Kurtis for '
-        'women online with the easy return policy. Explore Indian Kurtis online under budget with up to {}% discount '
-        'with my code {}!'.format(
-            brand, brand, discount, coupon_code),
-        'Check out stylish Kurti, sleeveless Kurtis and designer Kurtis at {}! From short Kurtis to long Kurtis, '
-        'Kurti dresses, ladies Kurti, {} has everything. Get affordable and cheap Kurti for women online with an easy '
-        'return policy and exciting offers! Use my code {} and get up to {}% discount on selected designer Kurtas for '
-        'women!'.format(
-            brand, brand, coupon_code, discount),
-        'Enjoy {}% discount on selected designer Kurtas for women! Use {} and get designer Kurtis and sleeveless '
-        'Kurtis online at {}. Shop for Kurtis online for women for all occasions- Partywear kurta sets to casual '
-        'wear, daily wear and office wear; {} is a one-stop shop for all your ethnic wear needs.'.format(
-            discount, coupon_code, brand, brand)])
+
+    desc = getInfo(brand=brand, coupon_code=coupon_code, discount=discount)
 
     output_str += first_line
     output_str = output_str + '\n\nProduct Links: \n'
