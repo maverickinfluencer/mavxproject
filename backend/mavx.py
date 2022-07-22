@@ -67,7 +67,7 @@ def get_descriptions():
     result = get_description(influencer_name=influencer_name, coupon_code=coupon_code,
                              campaign_month=campaign_month, brand_name=brand_name, uncleaned_links=links)
     update_description_airtable(record_id=record_id, description=result, base_id=base_id)
-    return jsonify("Description updated on airtable")
+    return jsonify(result)
 
 
 @app.route('/api/v1/admin/video-data')
